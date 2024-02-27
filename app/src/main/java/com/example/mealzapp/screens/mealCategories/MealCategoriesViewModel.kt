@@ -1,4 +1,4 @@
-package com.example.mealzapp.screens.mealCategories
+package com.example.mealzapp.screens
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf

@@ -6,7 +6,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.mealzapp.screens.MealCategories.MealsCategoryScreen
-import com.example.mealzapp.screens.mealCategories.MealCategoriesViewModel
+import com.example.mealzapp.screens.MealCategoriesViewModel
+
 
 @Composable
 fun ApplicationNavigation(){
