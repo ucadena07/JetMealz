@@ -32,20 +32,24 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.example.mealzapp.model.Category
+import com.example.mealzapp.navigation.ApplicationScreens
 import com.example.mealzapp.screens.MealCategoriesViewModel
 
 
 @Composable
-fun MealsCategoryScreen(vm: MealCategoriesViewModel) {
+fun MealsCategoryScreen(vm: MealCategoriesViewModel, navController: NavHostController) {
 
     Surface(modifier = Modifier
         .fillMaxSize()
         .padding(12.dp)) {
         LazyColumn{
             items(vm.meals.value){
-                MealCategory(meal = it)
+                MealCategory(meal = it){
+                    navController.navigate("${ApplicationScreens.MealDetailsScreen}/$it")
+                }
             }
         }
     }
@@ -54,13 +58,16 @@ fun MealsCategoryScreen(vm: MealCategoriesViewModel) {
 
 
 @Composable
-fun MealCategory(meal: Category){
+fun MealCategory(meal: Category, navigationCb: (String) -> Unit = {}){
     var isExpanded by remember{ mutableStateOf(false)}
     Card(shape = RoundedCornerShape(8.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(4.dp)) {
+            .padding(4.dp)
+            .clickable {
+                navigationCb(meal.idCategory)
+            }) {
         Row(modifier = Modifier.animateContentSize()) {
             AsyncImage(
                 model = meal.strCategoryThumb,

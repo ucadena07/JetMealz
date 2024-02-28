@@ -9,10 +9,10 @@ import com.example.mealzapp.model.Category
 import com.example.mealzapp.repository.MealsRepository
 import kotlinx.coroutines.launch
 
-class MealCategoriesViewModel(private  val repo: MealsRepository = MealsRepository()) : ViewModel() {
+class MealCategoriesViewModel() : ViewModel() {
 
     val meals: MutableState<List<Category>> = mutableStateOf(emptyList<Category>())
-
+    private  val repo: MealsRepository = MealsRepository.getInstance()
     init {
         viewModelScope.launch {
             meals.value = getMealsAsync()
