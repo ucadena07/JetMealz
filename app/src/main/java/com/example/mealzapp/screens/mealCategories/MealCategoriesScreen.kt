@@ -1,5 +1,6 @@
 package com.example.mealzapp.screens.MealCategories
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -60,7 +61,7 @@ fun MealCategory(meal: Category){
         modifier = Modifier
             .fillMaxWidth()
             .padding(4.dp)) {
-        Row {
+        Row(modifier = Modifier.animateContentSize()) {
             AsyncImage(
                 model = meal.strCategoryThumb,
                 contentDescription = "image",
