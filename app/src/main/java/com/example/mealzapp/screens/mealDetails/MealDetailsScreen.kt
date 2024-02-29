@@ -1,6 +1,10 @@
 package com.example.mealzapp.screens.mealDetails
 
+import androidx.compose.animation.animateColor
+import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.updateTransition
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -30,13 +34,37 @@ import com.example.mealzapp.model.Category
 @Composable
 fun MealDetailScreen(navController: NavHostController, meal: Category?) {
     var isExpanded by remember { mutableStateOf(false)}
-    val imageSizeDp: Dp by animateDpAsState(targetValue = if(isExpanded) 200.dp else 100.dp,
-        label = "test"
+    var profilePicState by remember { mutableStateOf(MealPropsPicState.Normal)}
+    val transition = updateTransition(targetState = profilePicState, label = null)
+    val imageSizeDp by transition.animateDp(
+        targetValueByState ={
+                            it.size
+        },label = ""
     )
+    val color by transition.animateColor(
+        targetValueByState = {
+            it.color
+        }, label = ""
+    )
+
+    val width by transition.animateDp(
+        targetValueByState = {
+            it.borderWidth
+        }, label = ""
+    )
+
+
     Column(modifier = Modifier.fillMaxSize()) {
         Row {
             if(meal != null){
-                Card(colors = CardDefaults.cardColors(containerColor = Color.White)) {
+                Card(colors = CardDefaults.cardColors(containerColor = Color.White),
+                    modifier = Modifier.padding(16.dp),
+                    shape = CircleShape,
+                    border = BorderStroke(
+                        width = width,
+                        color = color
+                    )
+                ) {
 
                     AsyncImage(
                         model = meal.strCategoryThumb,
@@ -56,8 +84,13 @@ fun MealDetailScreen(navController: NavHostController, meal: Category?) {
             }
 
         }
-        Button(onClick = { isExpanded = !isExpanded}, modifier = Modifier.padding(16.dp)) {
+        Button(onClick = { profilePicState = if(profilePicState == MealPropsPicState.Normal) MealPropsPicState.Expanded else MealPropsPicState.Normal}, modifier = Modifier.padding(16.dp)) {
             Text(text = "Change state of the image")
         }
     }
+}
+
+enum class MealPropsPicState(val color: Color,val size: Dp, val borderWidth: Dp){
+    Normal(Color.Magenta,120.dp,8.dp),
+    Expanded(Color.Green,200.dp,24.dp)
 }
